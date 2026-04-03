@@ -1,8 +1,7 @@
 from collections import deque
 import random
 
-class ReplayMemory():
-    #creating queue
+class ReplayMemory:
     def __init__(self, maxlen, seed=None):
         self.memory = deque([], maxlen=maxlen)
 

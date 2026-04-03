@@ -1,0 +1,17 @@
+New best reward: -6.899999999999999 (previous best: -inf) for episode 1
+New best reward: -8.7 (previous best: -inf) for episode 1
+New best reward: -7.499999999999998 (previous best: -inf) for episode 1
+New best reward: -6.299999999999999 (previous best: -7.499999999999998) for episode 3
+New best reward: -5.699999999999998 (previous best: -6.299999999999999) for episode 32
+New best reward: -4.499999999999998 (previous best: -5.699999999999998) for episode 34
+New best reward: -3.899999999999998 (previous best: -4.499999999999998) for episode 77
+New best reward: -0.8999999999999986 (previous best: -3.899999999999998) for episode 78
+New best reward: -0.29999999999999893 (previous best: -0.8999999999999986) for episode 190
+New best reward: 0.9000000000000004 (previous best: -0.29999999999999893) for episode 194
+New best reward: 2.0999999999999996 (previous best: 0.9000000000000004) for episode 257
+New best reward: 2.599999999999998 (previous best: 2.0999999999999996) for episode 266
+New best reward: 2.9999999999999982 (previous best: 2.599999999999998) for episode 303
+New best reward: 3.1999999999999975 (previous best: 2.9999999999999982) for episode 376
+New best reward: 3.299999999999997 (previous best: 3.1999999999999975) for episode 408
+New best reward: 4.799999999999997 (previous best: 3.299999999999997) for episode 541
+New best reward: 11.499999999999954 (previous best: 4.799999999999997) for episode 554

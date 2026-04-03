@@ -1,5 +1,3 @@
-import argparse
-from pickletools import optimize
 import random
 import flappy_bird_gymnasium
 import gymnasium as gym
@@ -12,6 +10,7 @@ import itertools
 import yaml  
 import os
 import argparse
+
 
 if torch.backends.mps.is_available():
     device = "mps"
@@ -59,6 +58,9 @@ class Agent:
 
         policy_dqn = DQN(num_states, num_actions).to(device)
 
+        if not is_training:
+            policy_dqn.load_state_dict(torch.load(self.MODEL_FILE))
+
         if is_training:
             memory = ReplayMemory(self.replay_memory_size)
             epsilon = self.epsilon_init
@@ -83,21 +85,27 @@ class Agent:
             while not terminated and episode_rewards < self.reward_threshold:
                 if is_training and random.random() < epsilon:
                     action = env.action_space.sample()
-                    action = torch.tensor(action, dtype=torch.long).to(device)
+                    action = torch.tensor([action], dtype=torch.long).to(device)
                 else:
-                     with torch.no_grad():
+                    with torch.no_grad():
                         action = policy_dqn(state.unsqueeze(0)).argmax(dim=1).to(device)
 
                 next_state, reward, terminated, _, _ = env.step(action.item())
+
+                next_state = torch.tensor(next_state, dtype=torch.float32).to(device)
 
                 if is_training:
                     memory.append((state, action, next_state, reward, terminated))
                     steps += 1
 
-                    state = next_state
-                    episode_rewards += reward
+                state = next_state
 
-            print(f"for episode={episode + 1} total reward={episode_rewards} & epsilon={epsilon}")
+                episode_rewards += reward
+
+            if is_training:
+                print(f"for episode={episode + 1} total reward={episode_rewards} & epsilon={epsilon}")
+            else:
+                print(f"for episode={episode + 1} total reward={episode_rewards}")
 
             if is_training:
                 epsilon = max(self.epsilon_min, epsilon * self.epsilon_decay)
@@ -132,7 +140,7 @@ class Agent:
         with torch.no_grad():
             target_q_values = reward + self.gamma * target_dqn(next_state).max(dim=1)[0] * (1 - terminated)
 
-        current_q_values = policy_dqn(state).gather(1, action.unsqueeze(1)).squeeze()
+        current_q_values = policy_dqn(state).gather(1, action).squeeze()
 
         loss = self.loss_fn(current_q_values, target_q_values)
 
@@ -153,5 +161,3 @@ if __name__ == "__main__":
         dql.run(is_training=True, render=False)
     else:
         dql.run(is_training=False, render=True)
-
-        
